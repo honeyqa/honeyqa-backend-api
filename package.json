@@ -1,0 +1,24 @@
+{
+  "name": "nodejs-restful-api-server",
+  "version": "0.0.1",
+  "description": "nodejs-restful-api-server",
+  "author": "Minwoo Jung <jmwsoft@gmail.com>",
+  "main": "index.js",
+  "keywords": [
+    "nodejs",
+    "client",
+    "javascript"
+  ],
+  "scripts": {
+    "pretest": "jslint --node --sloppy index.js lib/*.js lib/jute/*.js",
+    "test": "mocha --recursive --reporter spec test/*",
+    "coverage": "istanbul cover _mocha --recursive test/*"
+  },
+  "engines": {
+    "node": ">=0.6.0"
+  },
+  "dependencies": {
+    "underscore": "~1.4.4",
+    "async": "~0.2.7"
+  }
+}
