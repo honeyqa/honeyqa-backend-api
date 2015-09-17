@@ -9,7 +9,13 @@ api.get('/data', function (req, res) {
 		res.json(rows);
 	});
 });
+api.get('/error', function (req, res) {
+	db.query('SELECT * from error', function (err, rows) {
+		if (err) throw err;
 
+		res.json(rows);
+	});
+});
 
 
 module.exports = api;
