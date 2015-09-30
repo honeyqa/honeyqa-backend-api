@@ -5,10 +5,9 @@ var app = express();
 
 app.use('/api', api);
 
-var server = app.listen(config.apiServerPort, function () {
-	var host = server.address().address;
-	var port = server.address().port;
+var server = app.listen(config.apiServerPort, function() {
+  var host = server.address().address;
+  var port = server.address().port;
 
-	console.log('Start server: http://%s:%s', host, port);
+  console.log('Start server: http://%s:%s', host, port);
 });
-
