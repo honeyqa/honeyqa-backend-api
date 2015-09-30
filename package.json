@@ -2,7 +2,7 @@
   "name": "nodejs-restful-api-server",
   "version": "0.0.1",
   "description": "nodejs-restful-api-server",
-  "author": "Minwoo Jung <jmwsoft@gmail.com>",
+  "author": "HoneyQA Team",
   "main": "index.js",
   "keywords": [
     "nodejs",
