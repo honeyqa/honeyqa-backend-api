@@ -1,3 +1,4 @@
+var express = require('express');
 var app = express(),amqp = require('amqp');
 var crash = require('../router/crash.js');
 var bodyParser = require('body-parser');
@@ -12,7 +13,7 @@ app.get('/', function (req, res) {
 
 app.post('/api/client/exception', function(req, res) {
 
-  crash.insertLog(req,res);
+  res.send(req.body);
   
 });
 
@@ -24,7 +25,7 @@ app.post('/api/client/exception/native', function(req, res){
 });
       
 
-var server = app.listen(7777, function () {
+var server = app.listen(7707, function () {
   var host = server.address().address;
   var port = server.address().port;
 
