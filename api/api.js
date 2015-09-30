@@ -1,4 +1,3 @@
-var express = require('express');
 var app = express(),amqp = require('amqp');
 var crash = require('../router/crash.js');
 var bodyParser = require('body-parser');
