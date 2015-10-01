@@ -15,7 +15,7 @@ function HoneyStat(crashID, options, redisOptions) {
 
 var proto = HoneyStat.prototype;
 
-
+// redis 연결 초기화
 proto.connect = function(options) {
   options || (options = {});
 
@@ -33,11 +33,12 @@ proto.connect = function(options) {
   }
 };
 
-
+// 크래시 세트 추가
 proto.add = function(crashSet, crashCount, cb) {
   this.addIn(this.crashID, crashSet, crashCount, cb);
 };
 
+//
 proto.addIn = function(crashID, crashSet, crashCount, cb) {
   this.redis.zadd([crashID, crashCount, crashSet], function(err) {
     if (err && cb) return cb(err);
@@ -46,7 +47,7 @@ proto.addIn = function(crashID, crashSet, crashCount, cb) {
   });
 };
 
-
+// 크래시 연산
 proto.incr = function(crashSet, crashCount, cb) {
   this.incrIn(this.crashID, crashSet, crashCount, cb);
 };
@@ -59,7 +60,7 @@ proto.incrIn = function(crashID, crashSet, crashCount, cb) {
   });
 };
 
-
+// 크래시 순위
 proto.rank = function(crashSet, cb) {
   this.rankIn(this.crashID, crashSet, cb);
 };
@@ -82,7 +83,7 @@ proto.rankIn = function(crashID, crashSet, cb) {
   }
 };
 
-
+// 크래시 카운트
 proto.crashCount = function(crashSet, cb) {
   this.crashCountIn(this.crashID, crashSet, cb);
 };
@@ -97,7 +98,7 @@ proto.crashCountIn = function(crashID, crashSet, cb) {
   });
 };
 
-
+// 크래시 삭제
 proto.rm = function(crashSet, cb) {
   this.rmIn(this.crashID, crashSet, cb);
 };
@@ -111,6 +112,7 @@ proto.rmIn = function(crashID, crashSet, cb) {
 };
 
 
+// 크래시 리스트 정렬
 proto.list = function(page, cb) {
   this.listIn(this.crashID, page, cb);
 };
@@ -152,7 +154,7 @@ proto.listIn = function(crashID, page, cb) {
   }
 };
 
-
+// 크래시 리스트 통계에서 특정 크래시 순위 얻기
 proto.at = function(rank, cb) {
   this.atIn(this.crashID, rank, cb);
 };
@@ -178,7 +180,7 @@ proto.atIn = function(crashID, rank, cb) {
   }
 };
 
-
+// 전체 크래시 통계 얻기
 proto.total = function(cb) {
   this.totalIn(this.crashID, cb);
 };
