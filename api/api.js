@@ -13,7 +13,7 @@ app.get('/', function (req, res) {
 
 app.post('/api/client/exception', function(req, res) {
 
-  res.send(req.body);
+  crash.insertLog(req,res);
   
 });
 
