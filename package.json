@@ -20,6 +20,8 @@
   "dependencies": {
     "amqplib": "^0.4.0",
     "async": "~0.2.7",
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
     "underscore": "~1.4.4"
   }
 }
