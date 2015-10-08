@@ -3,6 +3,25 @@ var app = express();
 var crash = require('../router/crash.js');
 var bodyParser = require('body-parser');
 
+if (app.get('env') === 'development') {
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
+}
+
+// production error handler
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+});
+
 app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
