@@ -1,7 +1,8 @@
 var express = require('express');
 var app = express();
 var crash = require('../router/crash.js');
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser'),
+User = db.model('User'),
 
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
