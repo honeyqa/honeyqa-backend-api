@@ -2,17 +2,7 @@ var express = require('express');
 var app = express();
 var crash = require('../router/crash.js');
 var bodyParser = require('body-parser'),
-User = db.model('User'),
-
-if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
+User = db.model('User');
 
 // production error handler
 app.use(function(err, req, res, next) {
