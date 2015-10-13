@@ -3,6 +3,8 @@ var app = express();
 var crash = require('../router/crash.js');
 var bodyParser = require('body-parser'),
 User = db.model('User');
+var passport = require('passport'),
+LocalStrategy = require('passport-local').Strategy;
 
 // production error handler
 app.use(function(err, req, res, next) {
@@ -56,13 +58,14 @@ app.post('/:project_id', function (req, res) {
     });
 });
 
-app.post('/login', function (req, res) {
-    if (!req.body.email || !req.body.password) res.json({ code : 101, message : "failed" });
-
-    User.findOne({ "email" : req.body.email, "password" : req.body.password }, function (err, user) {
-        if (!user) res.json({ code : 102, message : "no account" });
-        res.json(user);
-    });
+passport.serializeUser(function(user, done) {
+  done(null, user._id);
+});
+ 
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
 });
 
 var server = app.listen(8080, function() {
