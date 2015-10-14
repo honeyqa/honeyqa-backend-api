@@ -2,17 +2,17 @@ var express = require('express');
 var app = express();
 var crash = require('../router/crash.js');
 var bodyParser = require('body-parser'),
-User = db.model('User');
+  User = db.model('User');
 var passport = require('passport'),
-LocalStrategy = require('passport-local').Strategy;
+  LocalStrategy = require('passport-local').Strategy;
 
 // production error handler
 app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
 });
 
 app.use(bodyParser.json());
@@ -27,6 +27,16 @@ app.post('/api/client/test', function(req, res) {
   res.send(req.body)
 });
 
+// SESSION
+app.post('/api/client/session', function(req, res) {
+  // TODO : Handle data from client
+  // REFERENCE : https://github.com/UrQA/Api_Backand/blob/master/controllers/url_control.js#L24
+  var result = {
+    'state': 'success'
+  };
+  res.send(result);
+});
+
 app.post('/api/client/exception', function(req, res) {
   crash.insertLog(req, res);
 });
@@ -35,33 +45,42 @@ app.post('/api/client/exception/native', function(req, res) {
   crash.insertLog(req, res);
 });
 
-app.post('/:project_id', function (req, res) {
-    if (!req.params.project_id) res.json({ code : 101, message: "failed" });
-    Project.findById(req.params.project_id, function (err, projects) {
-        projects.error.push({
-            errorMessage: req.body.errormessage,
-            className: req.body.classname,
-            methodName: req.body.methodname,
-            fileName: req.body.filename,
-            errorLine: req.body.errorline,
-            errorStack: req.body.errorstack,
-            osVersion: req.body.osversion,
-            osArch: req.body.osarch,
-            appMemTotal: req.body.memtotal,
-            appMemFree: req.body.memfree,
-	    createdAt: new Date()
-        });
-        projects.save(function (err) {
-            if (err) res.json({ code: 100, message: "unknown error" });
-            res.json({ code: 200, message: "success" });
-        });
+app.post('/:project_id', function(req, res) {
+  if (!req.params.project_id) res.json({
+    code: 101,
+    message: "failed"
+  });
+  Project.findById(req.params.project_id, function(err, projects) {
+    projects.error.push({
+      errorMessage: req.body.errormessage,
+      className: req.body.classname,
+      methodName: req.body.methodname,
+      fileName: req.body.filename,
+      errorLine: req.body.errorline,
+      errorStack: req.body.errorstack,
+      osVersion: req.body.osversion,
+      osArch: req.body.osarch,
+      appMemTotal: req.body.memtotal,
+      appMemFree: req.body.memfree,
+      createdAt: new Date()
     });
+    projects.save(function(err) {
+      if (err) res.json({
+        code: 100,
+        message: "unknown error"
+      });
+      res.json({
+        code: 200,
+        message: "success"
+      });
+    });
+  });
 });
 
 passport.serializeUser(function(user, done) {
   done(null, user._id);
 });
- 
+
 passport.deserializeUser(function(id, done) {
   User.findById(id, function(err, user) {
     done(err, user);
