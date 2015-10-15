@@ -37,6 +37,36 @@ app.post('/api/client/session', function(req, res) {
   res.send(result);
 });
 
+app.get('/error_instances/weekly/:id', function (req, res, next) {
+  
+  var key = req.params.id;
+  
+  var queryString = 'SELECT * from error_instances where error_id = ? AND date >= now() - interval 1 week';
+
+  connection.query(queryString, [key], function(err, rows, fields) {
+      if (err) throw err;
+
+      res.json(rows);
+
+  });
+
+});
+
+app.get('/appruncount/weekly/:id', function (req, res, next) {
+  
+  var key = req.params.id;
+  
+  var queryString = 'SELECT * from appruncount where project_id = ? AND date >= now() - interval 1 week';
+
+  connection.query(queryString, [key], function(err, rows, fields) {
+      if (err) throw err;
+
+      res.json(rows);
+
+  });
+
+});
+
 app.post('/api/client/exception', function(req, res) {
   crash.insertLog(req, res);
 });
