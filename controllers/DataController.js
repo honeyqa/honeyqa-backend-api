@@ -1,6 +1,8 @@
 
 var modelLocation = '../models/Data'
-
+var async = require('async');
+var gk = require('../common');
+var mq_pubhandler = require('../handler/mq_pubhandler');
 var util = require('util');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -34,11 +36,6 @@ var router = express.Router();
  	}));
  });
 
-/*
- * GET /list
- *
- */
-
  router.get(routeIdentifier+'/list', function(req, res, next) {
  	model.find({'owner':req.user._id}, function (err, objects) {
  		if (err) return res.send(err);
@@ -46,70 +43,31 @@ var router = express.Router();
  	});
  });
 
-/*
- * GET /create
- *
- */
+ router.get(routeIdentifier+'/error_instances/weekly/:id', function (req, res, next) {
+   var key = req.params.id;
+   var queryString = 'SELECT * from error_instances where error_id = ? AND date >= now() - interval 1 week';
 
- router.get(routeIdentifier+'/create', function(req, res, next) {
- 	req.body.owner = req.user._id;
- 	model.create(req.query, function (err, entry) {
- 		if (err) return next(err);
- 		return res.json({
-            status: 'Success',
-            message: 'Item created!'
-        });
- 	});
+   connection.query(queryString, [key], function(err, rows, fields) {
+   res.header("Access-Control-Allow-Origin", "*");
+   if (err) throw err;
+   res.json(rows);
+
+   });
  });
 
-/*
- * GET /get/:id
- *
- */
-
- router.get(routeIdentifier+'/get/:id', function (req, res, next) {
- 	model.findOne({
-        '_id':req.params.id,
-        'owner':req.user._id
-    }, function (err, entry){
- 		if(err) return res.send(err);
- 		return res.json(entry);
- 	});
- });
-
-/*
- * GET /update/:id
- *
- */
-
- router.get(routeIdentifier+'/update/:id', function(req, res, next) {
- 	model.findOneAndUpdate({
-        '_id':req.params.id,
-        'owner':req.user._id
-    },
-    req.query,
-    function (err, entry) {
- 		if (err) return res.send(err);
- 		return res.json({status: 'Success', message: 'Updated item'});
- 	});
- });
-
-/*
- * GET /delete/:id
- *
- */
-
-router.get(routeIdentifier+'/delete/:id', function (req, res, next) {
-  model.findOneAndRemove({
-        '_id':req.params.id,
-        'owner':req.user._id
-    },
-    req.body,
-    function (err, entry) {
-        if (err) return res.send(err);
-        return res.json({status: 'Success', message: 'Deleted item'});
+ router.get(routeIdentifier+'/appruncount/weekly/:id',, function(req, res, next) {
+   var data = { 'tag':'appruncount_weekly','data': req.params.id};
+   async.series([
+        function (cb) {
+            var ret = mq_pubhandler.publish(queueName, data);
+            cb();
+        }
+    ], function (err) {
+        var result = { 'state': 'success' };
+        res.send(result);
     });
-});
+
+ });
 
 // TODO : DELETE THIS ON RELEASE
 router.post(routeIdentifier+'/api/client/test', function(req, res) {
