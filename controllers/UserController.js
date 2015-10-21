@@ -21,7 +21,7 @@
  *
  */
 
- router.get(routeIdentifier+'/create', function(req, res, next) {
+ router.get(routeIdentifier+'/urqa/user', function(req, res, next) {
     if (req.query === undefined || req.query.username === undefined || req.query.password === undefined) {
         return res.json({
             status: 'Failure',
