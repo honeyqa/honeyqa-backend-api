@@ -1,12 +1,10 @@
 var express = require('express');
 var app = express();
-
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var connection = mysql.createConnection({
 	multipleStatements : 'true'
 });
-
 var server = app.listen(8080, function(){
 	var host = server.address().address;
 	var port = server.address().port;
