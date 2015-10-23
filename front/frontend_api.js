@@ -4,10 +4,6 @@ var app = express();
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var connection = mysql.createConnection({
-	host	 : '210.122.7.149',
-	user 	 : 'root',
-	password : 'gjsl',
-	database : 'honeyqa',
 	multipleStatements : 'true'
 });
 
