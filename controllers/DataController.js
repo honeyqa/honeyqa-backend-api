@@ -42,8 +42,8 @@ var router = express.Router();
  		return res.json(objects);
  	});
  });
- 
- 
+
+
 router.get(routeIdentifier+'/appruncount/weekly/:id', function(req, res){
 	var key = req.params.id;
 	var queryString = 'select * from appruncount where project_id = ? and date >= now() - interval 1 week order by date';
@@ -51,7 +51,7 @@ router.get(routeIdentifier+'/appruncount/weekly/:id', function(req, res){
 		if(err) throw err;
 
 		res.header('Access-Control-Allow-Origin', '*');
-	 	
+
 	 	var result = new Object();
 		var weeklyArr = [];
 
@@ -93,7 +93,7 @@ router.get(routeIdentifier+'/most/errorbyappver/:id', function(req, res){
 
 		var result = new Object();
 		result = rows[0];
-		
+
 		res.send(result);
 	});
 });
@@ -108,7 +108,7 @@ router.get(routeIdentifier+'/most/errorbydevice/:id', function(req, res){
 
 		var result = new Object();
 		result = rows[0];
-		
+
 		res.send(result);
 	});
 });
@@ -123,7 +123,7 @@ router.get(routeIdentifier+'/most/errorbysdkversion/:id', function(req, res){
 
 		var result = new Object();
 		result = rows[0];
-		
+
 		res.send(result);
 	});
 });
@@ -138,7 +138,7 @@ router.get(routeIdentifier+'/most/errorbycountry/:id', function(req, res){
 
 		var result = new Object();
 		result = rows[0];
-		
+
 		res.send(result);
 	});
 });
@@ -153,7 +153,7 @@ router.get(routeIdentifier+'/most/errorbyclassname/:id', function(req, res){
 
 		var result = new Object();
 		result = rows[0];
-		
+
 		res.send(result);
 	});
 });
@@ -185,20 +185,14 @@ router.get(routeIdentifier+'/most/errorbyclassname/:id', function(req, res){
 
  });
 
-// TODO : DELETE THIS ON RELEASE
-router.post(routeIdentifier+'/api/client/test', function(req, res) {
-  console.log(req.body)
-  res.send(req.body)
+// Android
+router.post(routeIdentifier+'/api/client/session', function(req, res) {
+  res.status(200).send({ response: 200 });
 });
 
-// SESSION
-router.post(routeIdentifier+'/api/client/session', function(req, res) {
-  // TODO : Handle data from client
-  // REFERENCE : https://github.com/UrQA/Api_Backand/blob/master/controllers/url_control.js#L24
-  var result = {
-    'state': 'success'
-  };
-  res.send(result);
+// iOS
+router.post(routeIdentifier+'/api/ios/client/session', function(req, res) {
+  res.status(200).send({ response: 200 });
 });
 
 module.exports = router;
