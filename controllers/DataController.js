@@ -185,6 +185,7 @@ router.get(routeIdentifier+'/most/errorbyclassname/:id', function(req, res){
 
  });
 
+// Client
 // Android
 router.post(routeIdentifier+'/api/client/session', function(req, res) {
   res.status(200).send({ response: 200 });
@@ -192,6 +193,13 @@ router.post(routeIdentifier+'/api/client/session', function(req, res) {
 
 // iOS
 router.post(routeIdentifier+'/api/ios/client/session', function(req, res) {
+  // TODO : insert data to redis
+  // apikey / appversion / ios_version / model / carrier_name / country_code
+  res.status(200).send({ response: 200 });
+});
+
+router.post(routeIdentifier+'/api/ios/client/exception', function(req, res) {
+  // TODO : pass data to worker
   res.status(200).send({ response: 200 });
 });
 

@@ -1,6 +1,4 @@
-
 var redis = require('redis');
-
 
 function HoneyStat(crashID, options, redisOptions) {
   options || (options = {});
@@ -12,13 +10,11 @@ function HoneyStat(crashID, options, redisOptions) {
   this.connect(redisOptions);
 }
 
-
 var proto = HoneyStat.prototype;
 
 // redis 연결 초기화
 proto.connect = function(options) {
   options || (options = {});
-
 
   if (options.connection_id !== undefined &&
       options.connected !== undefined &&
