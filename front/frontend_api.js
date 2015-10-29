@@ -31,6 +31,42 @@ app.get('/', function(req, res){
 	res.send('Honeyqa Frontend API');
 });
 
+
+app.get('/user/:user_id', function(req, res){
+	var key = req.params.user_id;
+	var queryString = 'select email, nickname from users where id = ?';
+
+	connection.query(queryString, [key], function(err, rows, fields){
+		if(err) throw err;
+
+		res.header('Access-Control-Allow-Origin', '*');
+
+		var result = new Object();
+		result = rows[0];
+
+		res.send(result);
+	});
+
+});
+
+app.get('/projects/:user_id', function(req, res){
+	var key = req.params.user_id;
+	var queryString = 'select title, apikey, platform, category, stage, time_zone, date ' +
+		'from projects ' +
+		'where user_id = ?';
+
+	connection.query(queryString, [key], function(err, rows, fields){
+		if(err) throw err;
+
+		res.header('Access-Control-Allow-Origin', '*');
+
+		var result = new Object();
+		result.projects = rows;
+
+		res.send(result);
+	});
+});
+
 app.get('/project/:apikey/weekly_appruncount', function(req, res){
 	var key = req.params.apikey;
 	var queryString = 'select * ' +
