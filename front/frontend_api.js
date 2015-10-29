@@ -1,5 +1,5 @@
 var express = require('express');
-var config = require('./config.js');
+var config = require('./../config/config.js');
 var async = require('async');
 var app = express();
 
