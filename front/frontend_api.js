@@ -31,7 +31,7 @@ app.get('/', function(req, res){
 	res.send('Honeyqa Frontend API');
 });
 
-app.get('project/:apikey/weekly_appruncount', function(req, res){
+app.get('/project/:apikey/weekly_appruncount', function(req, res){
 	var key = req.params.apikey;
 	var queryString = 'select * ' +
 		'from appruncount ' +
@@ -62,7 +62,7 @@ app.get('project/:apikey/weekly_appruncount', function(req, res){
 	});
 });
 
-app.get('project/:apikey/most/sessionbyappver', function(req, res){
+app.get('/project/:apikey/most/sessionbyappver', function(req, res){
 	var key = req.params.apikey;
 	var queryString = 'select appversion, count(*) as count ' +
 		'from sessions ' +
@@ -80,7 +80,7 @@ app.get('project/:apikey/most/sessionbyappver', function(req, res){
 	});
 });
 
-app.get('project/:apikey/most/errorbyappver', function(req, res){
+app.get('/project/:apikey/most/errorbyappver', function(req, res){
 	var key = req.params.apikey;
 	var queryString = 'select appversion, count(*) as count ' +
 		'from error_instances ' +
@@ -99,7 +99,7 @@ app.get('project/:apikey/most/errorbyappver', function(req, res){
 	});
 });
 
-app.get('project/:apikey/most/errorbydevice', function(req, res){
+app.get('/project/:apikey/most/errorbydevice', function(req, res){
 	var key = req.params.apikey;
 	var queryString = 'select device, count(*) as count ' +
 		'from error_instances ' +
@@ -118,7 +118,7 @@ app.get('project/:apikey/most/errorbydevice', function(req, res){
 	});
 });
 
-app.get('project/:apikey/most/errorbysdkversion', function(req, res){
+app.get('/project/:apikey/most/errorbysdkversion', function(req, res){
 	var key = req.params.apikey;
 	var queryString = 'select sdkversion, count(*) as count ' +
 		'from error_instances ' +
@@ -137,7 +137,7 @@ app.get('project/:apikey/most/errorbysdkversion', function(req, res){
 	});
 });
 
-app.get('project/:apikey/most/errorbycountry', function(req, res){
+app.get('/project/:apikey/most/errorbycountry', function(req, res){
 	var key = req.params.apikey;
 	var queryString = 'select country, count(*) as count ' +
 		'from error_instances ' +
@@ -156,7 +156,7 @@ app.get('project/:apikey/most/errorbycountry', function(req, res){
 	});
 });
 
-app.get('project/:apikey/most/errorbyclassname', function(req, res){
+app.get('/project/:apikey/most/errorbyclassname', function(req, res){
 	var key = req.params.apikey;
 	var queryString = 'select lastactivity, count(*) as count ' +
 		'from error_instances ' +
@@ -176,7 +176,7 @@ app.get('project/:apikey/most/errorbyclassname', function(req, res){
 });
 
 
-app.get('project/:apikey/errors', function(req, res){
+app.get('/project/:apikey/errors', function(req, res){
 	res.header('Access-Control-Allow-Origin', '*');
 
 	var key = req.params.apikey;
@@ -228,7 +228,7 @@ app.get('project/:apikey/errors', function(req, res){
 	});
 });
 
-app.get('project/:apikey/filters', function(req, res){
+app.get('/project/:apikey/filters', function(req, res){
 	res.header('Access-Control-Allow-Origin', '*');
 
 	async.waterfall([
