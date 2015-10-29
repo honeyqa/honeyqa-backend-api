@@ -186,18 +186,58 @@ router.get(routeIdentifier+'/most/errorbyclassname/:id', function(req, res){
  });
 
 // Client
-// Android
-router.post(routeIdentifier+'/api/client/session', function(req, res) {
+
+// Android v1 (Default UrQA)
+// Exception
+router.post(routeIdentifier+'/urqa/client/send/exception', function(req, res) {
+  res.status(200).send({ response: 200 });
+});
+
+// Native Exception
+router.post(routeIdentifier+'/urqa/client/send/exception/native', function(req, res) {
+  res.status(200).send({ response: 200 });
+});
+
+// Session
+router.post(routeIdentifier+'/urqa/client/connect', function(req, res) {
+  res.status(200).send({ response: 200 });
+});
+
+// Key
+router.post(routeIdentifier+'/urqa/client/get_key', function(req, res) {
+  res.status(200).send({ response: 200 });
+});
+
+// Android v2 (HoneyQA)
+// Exception
+router.post(routeIdentifier+'/api/v2/client/exception', function(req, res) {
+  res.status(200).send({ response: 200 });
+});
+
+// Native Exception
+router.post(routeIdentifier+'/api/v2/client/exception/native', function(req, res) {
+  res.status(200).send({ response: 200 });
+});
+
+// Session
+router.post(routeIdentifier+'/api/v2/client/session', function(req, res) {
+  res.status(200).send({ response: 200 });
+});
+
+// Key
+router.post(routeIdentifier+'/api/v2/client/key', function(req, res) {
   res.status(200).send({ response: 200 });
 });
 
 // iOS
+// Session
 router.post(routeIdentifier+'/api/ios/client/session', function(req, res) {
   // TODO : insert data to redis
   // apikey / appversion / ios_version / model / carrier_name / country_code
   res.status(200).send({ response: 200 });
 });
 
+// Exception
 router.post(routeIdentifier+'/api/ios/client/exception', function(req, res) {
   // TODO : pass data to worker
   res.status(200).send({ response: 200 });
