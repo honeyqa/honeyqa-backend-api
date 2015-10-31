@@ -185,8 +185,17 @@ proto.totalIn = function(crashID, cb) {
 // Client Session
 // Session
 proto.clientSession = function(apikey, data, cb){
-  this.redis.hincrby("session", apikey, 1);
-  this.redis.rpush("sessionData", apikey, data);
+  this.redis.hincrby("session", apikey, 1, function (err, res) {
+    if (err){
+      return cb(err);
+    }
+    this.redis.rpush("sessionData", apikey, data, function (err, res) {
+      if (err){
+        return cb(err);
+      }
+      return cb(null, null);
+    });
+  });
 }
 
 module.exports = HoneyStat;
