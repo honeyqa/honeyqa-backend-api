@@ -6,6 +6,7 @@ var util = require('util');
 var express = require('express');
 var redisHandler = require('../handler/crashStat.js');
 var bodyParser = require('body-parser');
+var jsonParser = bodyParser.json()
 var authController = require('./AuthController');
 
 /**  Model and route setup **/
@@ -162,7 +163,6 @@ router.get(routeIdentifier + '/most/errorbyclassname/:id', function(req, res) {
   });
 });
 
-
 router.get(routeIdentifier + '/error_instances/weekly/:id', function(req, res, next) {
   var key = req.params.id;
   var queryString = 'SELECT * from error_instances where error_id = ? AND date >= now() - interval 1 week';
@@ -212,7 +212,7 @@ router.post(routeIdentifier + '/urqa/client/send/exception/native', function(req
 });
 
 // Session
-router.post(routeIdentifier + '/urqa/client/connect', function(req, res) {
+router.post(routeIdentifier + '/urqa/client/connect', jsonParser, function(req, res) {
   res.status(200).send({
     response: 200
   });
@@ -241,7 +241,8 @@ router.post(routeIdentifier + '/api/v2/client/exception/native', function(req, r
 });
 
 // Session
-router.post(routeIdentifier + '/api/v2/client/session', function(req, res) {
+router.post(routeIdentifier + '/api/v2/client/session', jsonParser, function(req, res) {
+  redisHandler.clientSession(res.body.apikey, res.body, function(err, res) {});
   res.status(200).send({
     response: 200
   });
@@ -255,18 +256,19 @@ router.post(routeIdentifier + '/api/v2/client/key', function(req, res) {
 });
 
 // iOS
-// Session
-router.post(routeIdentifier + '/api/ios/client/session', function(req, res) {
-  // TODO : insert data to redis
-  // apikey / appversion / ios_version / model / carrier_name / country_code
+// Exception
+router.post(routeIdentifier + '/api/ios/client/exception', function(req, res) {
+  // TODO : pass data to worker
   res.status(200).send({
     response: 200
   });
 });
 
-// Exception
-router.post(routeIdentifier + '/api/ios/client/exception', function(req, res) {
-  // TODO : pass data to worker
+// Session
+router.post(routeIdentifier + '/api/ios/client/session', jsonParser, function(req, res) {
+  // TODO : insert data to redis
+  // apikey / appversion / ios_version / model / carrier_name / country_code
+  redisHandler.clientSession(res.body.apikey, res.body, function(err, res) {});
   res.status(200).send({
     response: 200
   });
