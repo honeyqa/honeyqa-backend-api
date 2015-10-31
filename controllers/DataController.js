@@ -4,6 +4,7 @@ var gk = require('../common');
 var mq_pubhandler = require('../handler/mq_pubhandler');
 var util = require('util');
 var express = require('express');
+var redisHandler = require('../handler/crashStat.js');
 var bodyParser = require('body-parser');
 var authController = require('./AuthController');
 
