@@ -17,8 +17,8 @@ proto.connect = function(options) {
   options || (options = {});
 
   if (options.connection_id !== undefined &&
-      options.connected !== undefined &&
-      options.ready !== undefined) {
+    options.connected !== undefined &&
+    options.ready !== undefined) {
     return this.redis = options;
   }
 
@@ -107,7 +107,6 @@ proto.rmIn = function(crashID, crashSet, cb) {
   });
 };
 
-
 // 크래시 리스트 정렬
 proto.list = function(page, cb) {
   this.listIn(this.crashID, page, cb);
@@ -122,10 +121,7 @@ proto.listIn = function(crashID, page, cb) {
   }
 
   var req = [
-    crashID
-  , page * this.pageSize
-  , page * this.pageSize + this.pageSize - 1
-  , 'WITHcrashCountS'
+    crashID, page * this.pageSize, page * this.pageSize + this.pageSize - 1, 'WITHcrashCountS'
   ];
 
   if (this.reverse) {
@@ -137,12 +133,13 @@ proto.listIn = function(crashID, page, cb) {
   function res(err, range) {
     if (err) return cb(err);
 
-    var list = [], l = range.length;
+    var list = [],
+      l = range.length;
 
     for (var i = 0; i < l; i += 2) {
       list.push({
-        'crashSet': range[i]
-      , 'crashCount': range[i+1]
+        'crashSet': range[i],
+        'crashCount': range[i + 1]
       });
     }
 
@@ -170,8 +167,8 @@ proto.atIn = function(crashID, rank, cb) {
       return cb(null, null);
 
     cb(null, {
-      crashSet: range[0]
-    , crashCount: +range[1]
+      crashSet: range[0],
+      crashCount: +range[1]
     });
   }
 };
@@ -184,5 +181,12 @@ proto.total = function(cb) {
 proto.totalIn = function(crashID, cb) {
   this.redis.zcard(crashID, cb);
 };
+
+// Client Session
+// Session
+proto.clientSession = function(apikey, data, cb){
+  this.redis.hincrby("session", apikey, 1);
+  this.redis.rpush("sessionData", apikey, data);
+}
 
 module.exports = HoneyStat;
