@@ -171,7 +171,7 @@ router.get(routeIdentifier+'/most/errorbyclassname/:id', function(req, res){
    });
  });
 
- router.get(routeIdentifier+'/appruncount/weekly/:id',, function(req, res, next) {
+ router.get(routeIdentifier+'/appruncount/weekly/:id', function(req, res, next) {
    var data = { 'tag':'appruncount_weekly','data': req.params.id};
    async.series([
         function (cb) {
