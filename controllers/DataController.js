@@ -267,10 +267,19 @@ router.post(routeIdentifier + '/api/v2/client/key', function(req, res) {
 // Exception
 router.post(routeIdentifier + '/api/ios/client/exception', jsonParser, function(req, res) {
   if (dataChecker.iOSExceptionCheck(req.body)) {
+   
+    async.series([
+   
+    function(cb) {
     mq.publish('iOSV1', req.body);
     res.status(200).send({
       response: 200
     });
+    cb();
+    }
+  
+  ]);
+    
   } else {
     res.status(400).send({
       response: 400
