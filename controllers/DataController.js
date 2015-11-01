@@ -1,12 +1,13 @@
 var modelLocation = '../models/Data'
 var async = require('async');
 var gk = require('../common');
-var mq_pubhandler = require('../handler/mq_pubhandler');
+var mq = require('../handler/mq_pubhandler');
 var util = require('util');
 var express = require('express');
 var redisHandler = require('../handler/crashStat.js');
 var bodyParser = require('body-parser');
-var jsonParser = bodyParser.json()
+var jsonParser = bodyParser.json();
+var dataChecker = require('../security/valid.js');
 var authController = require('./AuthController');
 
 /**  Model and route setup **/
@@ -182,7 +183,7 @@ router.get(routeIdentifier + '/appruncount/weekly/:id', function(req, res, next)
   };
   async.series([
     function(cb) {
-      var ret = mq_pubhandler.publish(queueName, data);
+      var ret = mq.publish(queueName, data);
       cb();
     }
   ], function(err) {
@@ -227,10 +228,17 @@ router.post(routeIdentifier + '/urqa/client/get_key', function(req, res) {
 
 // Android v2 (HoneyQA)
 // Exception
-router.post(routeIdentifier + '/api/v2/client/exception', function(req, res) {
-  res.status(200).send({
-    response: 200
-  });
+router.post(routeIdentifier + '/api/v2/client/exception', jsonParser, function(req, res) {
+  if (dataChecker.androidExceptionCheck(req.body)) {
+    mq.publish('androidV2', req.body);
+    res.status(200).send({
+      response: 200
+    });
+  } else {
+    res.status(400).send({
+      response: 400
+    });
+  }
 });
 
 // Native Exception
@@ -257,11 +265,17 @@ router.post(routeIdentifier + '/api/v2/client/key', function(req, res) {
 
 // iOS
 // Exception
-router.post(routeIdentifier + '/api/ios/client/exception', function(req, res) {
-  // TODO : pass data to worker
-  res.status(200).send({
-    response: 200
-  });
+router.post(routeIdentifier + '/api/ios/client/exception', jsonParser, function(req, res) {
+  if (dataChecker.iOSExceptionCheck(req.body)) {
+    mq.publish('iOSV1', req.body);
+    res.status(200).send({
+      response: 200
+    });
+  } else {
+    res.status(400).send({
+      response: 400
+    });
+  }
 });
 
 // Session
