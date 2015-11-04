@@ -192,7 +192,7 @@ router.post(routeIdentifier + '/urqa/client/send/exception', function(req, res, 
 
   async.series([
     function(cb) {
-      mq_pubhandler.publish('android_receive_exception', honeydata);
+      mq.publish('android_receive_exception', honeydata);
       cb();
     }
   ], function(err) {
