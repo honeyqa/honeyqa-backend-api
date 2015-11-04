@@ -176,7 +176,7 @@ router.get(routeIdentifier + '/error_instances/weekly/:id', function(req, res, n
   });
 });
 
-router.get(routeIdentifier + '/urqa/client/send/exception', function(req, res, next) {
+router.post(routeIdentifier + '/urqa/client/send/exception', function(req, res, next) {
   var honeydata = {};
 
   if (version) {
